@@ -8,6 +8,7 @@ uuidv4();
 
 export const TodoWrapper = () => {
     const [toDos, setToDos] = useState([])
+    const [showCompleted, setShowCompleted] = useState(false);
 
     const addToDo = toDo => {
         setToDos([...toDos, {
@@ -39,11 +40,32 @@ export const TodoWrapper = () => {
             todo, task, isEditing: !todo.isEditing} : todo));
     }
 
+    const toggleCompletedFilter = () => {
+        setShowCompleted(!showCompleted);
+    };
+
+    const filteredTasks = showCompleted
+        ? toDos.filter((todo) => todo.completed)
+        : toDos;
+
+    const handleToggle = (todoId) => {
+        setToDos((prevToDos) =>
+            prevToDos.map((todo) =>
+                todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
+            )
+        );
+    };
+
     return (
         <div className="TodoWrapper">
             <h1>To Do List</h1>
+
+            <button onClick={toggleCompletedFilter}>
+                {showCompleted ? 'Show All' : 'Show Completed'}
+            </button>
+
             <TodoForm addToDo={addToDo} />
-            {toDos.map((todo, index) => (
+            {filteredTasks.map((todo) => (
                 todo.isEditing ? (
                     <EditTodoForm
                         editToDo={editTask}
@@ -53,10 +75,11 @@ export const TodoWrapper = () => {
                 ) : (
                     <Todo
                         task={todo}
-                        key={index}
+                        key={todo.id}
                         toggleComplete={toggleComplete}
                         deleteToDo={deleteToDo}
                         editToDo={editToDo}
+                        onToggle={handleToggle}
                     />
                 )
             ))}
