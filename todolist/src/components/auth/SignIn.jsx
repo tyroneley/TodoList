@@ -7,23 +7,27 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 const SignIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();   
+    const navigate = useNavigate();
 
     const signIn = (e) => {
         e.preventDefault();
         signInWithEmailAndPassword(auth, email, password)
-            .then(() => {
-                navigate.push('/todowrapper')
+            .then((loginDetails) => {
+                navigate('/todowrapper');
             })
             .catch((error) => {
                 console.log(error);
             });
     };
 
+    const signUp = (e) => {
+        navigate('/signup');
+    }
+
     return (
         <div className="sign-in-container">
             <form onSubmit={signIn}>
-                <h1>Log In to your Account</h1>
+                <h1 className="credits">Log In to your Account</h1>
                 <input
                     type="email"
                     placeholder="Enter your email"
@@ -38,6 +42,8 @@ const SignIn = () => {
                 ></input>
                 <button type="submit">Log In</button>
             </form>
+
+            <button onClick={signUp}>Sign Up</button>
         </div>
     );
 };

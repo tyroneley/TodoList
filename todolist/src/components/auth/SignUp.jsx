@@ -1,28 +1,18 @@
 import React, { useState } from 'react';
 import { auth } from '../../firebase';
+import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import SignIn from './SignIn';
-import {
-    createBrowserRouter,
-    RouterProvider,
-} from 'react-router-dom';
-
-const router = createBrowserRouter([
-    {
-        path: 'todo',
-        element: <SignIn/>
-    }
-])
 
 const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const signUp = (e) => {
         e.preventDefault();
         createUserWithEmailAndPassword(auth, email, password)
             .then(() => {
-                <RouterProvider router={router} />
+                navigate('/');
             }).catch((error) => {
                 console.log(error);
             });
@@ -31,7 +21,7 @@ const SignUp = () => {
     return (
         <div className="sign-in-container">
             <form onSubmit={signUp}>
-                <h1>Create a new account</h1>
+                <h1 className="credits">Create a new account</h1>
                 <input
                     type="email"
                     placeholder="Enter your email here"
@@ -46,6 +36,7 @@ const SignUp = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 >
                 </input>
+
                 <button type="submit">
                     Sign Up
                 </button>

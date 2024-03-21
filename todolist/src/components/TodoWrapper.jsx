@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Todo } from './Todo.jsx';
 import { TodoForm } from './TodoForm.jsx';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,6 +10,7 @@ uuidv4();
 export const TodoWrapper = () => {
     const [toDos, setToDos] = useState([])
     const [showCompleted, setShowCompleted] = useState(false);
+    const navigate = useNavigate();
 
     const addToDo = toDo => {
         setToDos([...toDos, {
@@ -56,12 +58,20 @@ export const TodoWrapper = () => {
         );
     };
 
+    const showProfile = () => {
+        navigate('/profile')
+    }
+
     return (
         <div className="TodoWrapper">
             <h1>To Do List</h1>
 
             <button onClick={toggleCompletedFilter}>
                 {showCompleted ? 'Show All' : 'Show Completed'}
+            </button>
+
+            <button onClick={showProfile}>
+                My Profile
             </button>
 
             <TodoForm addToDo={addToDo} />
